@@ -43,7 +43,7 @@ jobs:
       - name: Set up Middleware
         uses: hoverkraft-tech/compose-action@v2.0.0
         with:
-          compose-file: docker/docker-compose.middleware.yml
+          compose-file: docker/docker-compose.middleware.yaml
           services: |
             redis
             weaviate
