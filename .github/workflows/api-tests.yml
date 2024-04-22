@@ -41,7 +41,7 @@ jobs:
           packages: ffmpeg
 
       - name: Set up Weaviate
-        uses: hoverkraft-tech/compose-action@v2.0.0
+        uses: hoverkraft-tech/compose-action@latest
         with:
           compose-file: docker/docker-compose.middleware.yaml
           services: |
@@ -49,14 +49,14 @@ jobs:
             weaviate
 
       - name: Set up Qdrant
-        uses: hoverkraft-tech/compose-action@v2.0.0
+        uses: hoverkraft-tech/compose-action@latest
         with:
           compose-file: docker/docker-compose.qdrant.middleware.yaml
           services: |
             qdrant
 
       - name: Set up Milvus
-        uses: hoverkraft-tech/compose-action@v2.0.0
+        uses: hoverkraft-tech/compose-action@latest
         with:
           compose-file: docker/milvus-standalone-docker-compose.yml
           services: |
