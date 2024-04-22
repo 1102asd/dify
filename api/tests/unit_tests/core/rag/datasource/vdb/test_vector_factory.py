@@ -1,6 +1,7 @@
 import uuid
 from typing import Optional
 
+from core.rag.datasource.vdb.qdrant.qdrant_vector import QdrantConfig, QdrantVector
 from core.rag.datasource.vdb.vector_base import BaseVector
 from core.rag.datasource.vdb.weaviate.weaviate_vector import WeaviateConfig, WeaviateVector
 from core.rag.models.document import Document
@@ -23,6 +24,36 @@ def test_weviate_vector():
                 batch_size=100
             ),
             attributes=attributes
+        )
+        document = Document(
+            page_content='test',
+            metadata={
+                "doc_id": dataset_id,
+                "doc_hash": dataset_id,
+                "document_id": dataset_id,
+                "dataset_id": dataset_id,
+            }
+        )
+        vector.create(texts=[document], embeddings=[[1.1, 2.2, 3.3]])
+        vector.delete()
+
+
+def test_qdrant_vector():
+    vector_type = 'qdrant'
+
+    vector: Optional[BaseVector] = None
+    if vector_type == "qdrant":
+        dataset_id = str(uuid.uuid4())
+        collection_name = Dataset.gen_collection_name_by_id(dataset_id)
+        vector = QdrantVector(
+            collection_name=dataset_id,
+            group_id=dataset_id,
+            config=QdrantConfig(
+                endpoint='http://localhost:6333',
+                api_key='difyai123456',
+                root_path='/',
+                timeout='20'
+            )
         )
         document = Document(
             page_content='test',

@@ -48,6 +48,13 @@ jobs:
             redis
             weaviate
 
+      - name: Set up Qdrant
+        uses: hoverkraft-tech/compose-action@v2.0.0
+        with:
+          compose-file: docker/docker-compose.qdrant.middleware.yaml
+          services: |
+            qdrant
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
