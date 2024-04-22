@@ -68,3 +68,6 @@ jobs:
 
       - name: Run Workflow
         run: dev/pytest/pytest_workflow.sh
+
+      - name: Run Vector Store
+        run: dev/pytest/pytest_vdb.sh
