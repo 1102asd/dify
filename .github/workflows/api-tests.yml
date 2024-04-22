@@ -55,6 +55,15 @@ jobs:
           services: |
             qdrant
 
+      - name: Set up Milvus
+        uses: hoverkraft-tech/compose-action@v2.0.0
+        with:
+          compose-file: docker/milvus-standalone-docker-compose.yml
+          services: |
+            etcd
+            minio
+            standalone
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
