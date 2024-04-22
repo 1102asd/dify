@@ -40,6 +40,14 @@ jobs:
         with:
           packages: ffmpeg
 
+      - name: Set up Middleware
+        uses: hoverkraft-tech/compose-action@
+        with:
+          compose-file: docker/docker-compose.middleware.yml
+          services: |
+            redis
+            weaviate
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
