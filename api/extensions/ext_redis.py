@@ -1,7 +1,11 @@
+import os
+
 import redis
 from redis.connection import Connection, SSLConnection
 
-redis_client = redis.Redis()
+redis_client = redis.Redis(
+    password=os.environ.get('REDIS_PASSWORD')
+)
 
 
 def init_app(app):
