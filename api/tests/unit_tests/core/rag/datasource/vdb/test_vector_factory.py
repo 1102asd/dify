@@ -8,7 +8,7 @@ from models.dataset import Dataset
 
 
 def _get_sample_text() -> str:
-    return 'test'
+    return 'test_text'
 
 
 def _get_sample_embeddings() -> list[list[float]]:
@@ -28,7 +28,6 @@ def test_weaviate_vector():
         config=WeaviateConfig(
             endpoint='http://localhost:8080',
             api_key='WVF5YThaHlkYwhGUSmCRgsX3tD5ngdN8pkih',
-            batch_size=100
         ),
         attributes=attributes
     )
@@ -65,12 +64,10 @@ def test_qdrant_vector():
         config=QdrantConfig(
             endpoint='http://localhost:6333',
             api_key='difyai123456',
-            root_path='/',
-            timeout='20'
         )
     )
     document = Document(
-        page_content='test',
+        page_content=_get_sample_text(),
         metadata={
             "doc_id": dataset_id,
             "doc_hash": dataset_id,
@@ -78,6 +75,7 @@ def test_qdrant_vector():
             "dataset_id": dataset_id,
         }
     )
+
     # create vector
     vector.create(texts=[document], embeddings=_get_sample_embeddings())
 
@@ -100,15 +98,13 @@ def test_milvus_vector():
         collection_name=collection_name,
         config=MilvusConfig(
             host='localhost',
-            port='19530',
+            port=19530,
             user='root',
             password='Milvus',
-            secure='false',
-            database='default',
         )
     )
     document = Document(
-        page_content='test',
+        page_content=_get_sample_text(),
         metadata={
             "doc_id": dataset_id,
             "doc_hash": dataset_id,
