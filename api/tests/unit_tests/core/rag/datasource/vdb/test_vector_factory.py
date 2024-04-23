@@ -7,6 +7,18 @@ from core.rag.models.document import Document
 from models.dataset import Dataset
 
 
+def _get_sample_text() -> str:
+    return 'test'
+
+
+def _get_sample_embeddings() -> list[list[float]]:
+    return [[1.1, 2.2, 3.3]]
+
+
+def _get_sample_query_vector() -> list[float]:
+    return _get_sample_embeddings()[0]
+
+
 def test_weaviate_vector():
     attributes = ['doc_id', 'dataset_id', 'document_id', 'doc_hash']
     dataset_id = str(uuid.uuid4())
@@ -21,7 +33,7 @@ def test_weaviate_vector():
         attributes=attributes
     )
     document = Document(
-        page_content='test',
+        page_content=_get_sample_text(),
         metadata={
             "doc_id": dataset_id,
             "doc_hash": dataset_id,
@@ -29,7 +41,19 @@ def test_weaviate_vector():
             "dataset_id": dataset_id,
         }
     )
-    vector.create(texts=[document], embeddings=[[1.1, 2.2, 3.3]])
+
+    # create vector
+    vector.create(texts=[document], embeddings=_get_sample_embeddings())
+
+    # search by vector
+    hits_by_vector = vector.search_by_vector(query_vector=_get_sample_query_vector())
+    assert len(hits_by_vector) >= 1
+
+    # search by full text
+    hits_by_full_text = vector.search_by_full_text(query=_get_sample_text())
+    assert len(hits_by_full_text) >= 1
+
+    # delete vector
     vector.delete()
 
 
@@ -54,7 +78,18 @@ def test_qdrant_vector():
             "dataset_id": dataset_id,
         }
     )
-    vector.create(texts=[document], embeddings=[[1.1, 2.2, 3.3]])
+    # create vector
+    vector.create(texts=[document], embeddings=_get_sample_embeddings())
+
+    # search by vector
+    hits_by_vector = vector.search_by_vector(query_vector=_get_sample_query_vector())
+    assert len(hits_by_vector) >= 1
+
+    # search by full text
+    hits_by_full_text = vector.search_by_full_text(query=_get_sample_text())
+    assert len(hits_by_full_text) >= 1
+
+    # delete vector
     vector.delete()
 
 
@@ -81,5 +116,15 @@ def test_milvus_vector():
             "dataset_id": dataset_id,
         }
     )
-    vector.create(texts=[document], embeddings=[[1.1, 2.2, 3.3]])
+
+    # create vector
+    vector.create(texts=[document], embeddings=_get_sample_embeddings())
+
+    # search by vector
+    hits_by_vector = vector.search_by_vector(query_vector=_get_sample_query_vector())
+    assert len(hits_by_vector) >= 1
+
+    # milvus dos not support full text searching yet in < 2.3.x
+
+    # delete vector
     vector.delete()
